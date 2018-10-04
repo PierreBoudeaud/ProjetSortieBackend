@@ -41,8 +41,7 @@ public class SiteDAOImp implements DAO<Site> {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         List<Site> sites;
         try{
-            Query<Site> query = openSession.getSession().createQuery("from Sites");
-            sites = query.list();
+            sites = openSession.getSession().createQuery("select s from Site s").list();
         } catch(Exception ex){
             sites = new ArrayList<>();
         }

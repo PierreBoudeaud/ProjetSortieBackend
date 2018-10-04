@@ -2,7 +2,7 @@ package fr.eni.projetsortie.model;
 
 import javax.persistence.*;
 
-@Entity(name = "Sites")
+@Entity()
 @Table(name = "Sites")
 public class Site {
     @Id
