@@ -1,8 +1,11 @@
 package fr.eni.projetsortie.dao;
 
+import fr.eni.projetsortie.ProjetsortieApplication;
 import fr.eni.projetsortie.model.Participant;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,8 @@ import java.util.List;
 
 @Repository
 public class ParticipantDAOImp implements DAO<Participant> {
+    private static final Logger logger = LoggerFactory.getLogger(ProjetsortieApplication.class);
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -43,9 +48,9 @@ public class ParticipantDAOImp implements DAO<Participant> {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         List<Participant> participants;
         try{
-            Query<Participant> query = openSession.getSession().createQuery("from Participants");
-            participants = query.list();
+            participants = openSession.getSession().createQuery("select p from Participant p").list();
         } catch(Exception ex){
+            this.logger.error(ex.toString());
             participants = new ArrayList<>();
         }
         openSession.closeSession();

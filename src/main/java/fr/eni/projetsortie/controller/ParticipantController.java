@@ -1,11 +1,15 @@
 package fr.eni.projetsortie.controller;
 
+import fr.eni.projetsortie.ProjetsortieApplication;
 import fr.eni.projetsortie.model.Participant;
 import fr.eni.projetsortie.model.Site;
 import fr.eni.projetsortie.service.ParticipantServiceImp;
 import fr.eni.projetsortie.service.SiteServiceImp;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,6 +26,8 @@ public class ParticipantController {
 
     @Autowired
     private SiteServiceImp siteDAOImp;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProjetsortieApplication.class);
 
     @RequestMapping()
     public List<Participant> getParticipants(){
@@ -70,25 +76,15 @@ public class ParticipantController {
                         .path(String.valueOf(newParticipant.getId()))
                         .build()
                         .toUri();
+        this.logger.debug("Create participant " + location);
         return ResponseEntity.created(location).body(newParticipant);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Participant> updateParticipant(@PathVariable("id") int id,
-                                                         @RequestParam("pseudo") String pseudo,
-                                                         @RequestParam("email") String email,
-                                                         @RequestParam("nom") String nom,
-                                                         @RequestParam("prenom") String prenom,
-                                                         @RequestParam("site") int idSite,
-                                                         @RequestParam(name = "telephone", defaultValue = "", required = false) String telephone,
-                                                         @RequestParam("password") String password,
-                                                         @RequestParam(name = "admin", defaultValue = "false", required = false) boolean admin,
-                                                         @RequestParam(name = "actif", defaultValue = "false", required = false) boolean actif) {
-        Site site = this.siteDAOImp.get(idSite);
-        Participant newParticipant = new Participant(pseudo, email, nom, prenom, site, telephone, password, actif, admin, id);
-        this.participantService.cryptPassword(newParticipant);
-
-        newParticipant.setId(this.participantService.save(newParticipant));
-        return ResponseEntity.ok(newParticipant);
+                                                         @RequestBody Participant participant){
+        this.participantService.update(participant);
+        this.logger.debug("Update participant " + id);
+        return ResponseEntity.ok(participant);
     }
 }
