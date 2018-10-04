@@ -2,9 +2,6 @@ package fr.eni.projetsortie.conf;
 
 import java.util.Properties;
 
-import javax.sql.DataSource;
-
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -16,28 +13,63 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
+
+import static org.hibernate.cfg.Environment.*;
+
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "fr.eni.projetsortie.conf" })
-@PropertySource(value = { "classpath:jdbc.properties" })
+@ComponentScans(value = { @ComponentScan("fr.eni.projetsortie.dao"),
+        @ComponentScan("fr.eni.projetsortie.service") })
+@PropertySource(value = {"classpath:hibernate.properties"})
 public class HibernateConfig {
 
     @Autowired
     private Environment env;
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "fr.eni.projetsortie.model" });
-        sessionFactory.setHibernateProperties(hibernateProperties());
-        return sessionFactory;
+    public LocalSessionFactoryBean getSessionFactory() {
+        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
+
+        Properties props = new Properties();
+        // Setting JDBC properties
+        props.put(DRIVER, env.getProperty("mssql.driver"));
+        props.put(URL, env.getProperty("mssql.url"));
+        props.put(USER, env.getProperty("mssql.user"));
+        props.put(PASS, env.getProperty("mssql.password"));
+
+        // Setting Hibernate properties
+        props.put(SHOW_SQL, env.getProperty("hibernate.show_sql"));
+        props.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
+
+        // Setting C3P0 properties
+        props.put(C3P0_MIN_SIZE, env.getProperty("hibernate.c3p0.min_size"));
+        props.put(C3P0_MAX_SIZE, env.getProperty("hibernate.c3p0.max_size"));
+        props.put(C3P0_ACQUIRE_INCREMENT,
+                env.getProperty("hibernate.c3p0.acquire_increment"));
+        props.put(C3P0_TIMEOUT, env.getProperty("hibernate.c3p0.timeout"));
+        props.put(C3P0_MAX_STATEMENTS, env.getProperty("hibernate.c3p0.max_statements"));
+
+        factoryBean.setHibernateProperties(props);
+        factoryBean.setPackagesToScan("fr.eni.projetsortie.model");
+
+        return factoryBean;
     }
 
     @Bean
-    @Primary
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(env.getProperty("mssql.driver"));
+        dataSource.setUrl(env.getProperty("mssql.url"));
+        dataSource.setUsername(env.getProperty("mssql.user"));
+        dataSource.setPassword(env.getProperty("mssql.password"));
+
+        return dataSource;
+    }
+
+    @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean em = new          LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
         em.setPackagesToScan(new String[] { "fr.eni.projetsortie.model" });
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -46,28 +78,9 @@ public class HibernateConfig {
     }
 
     @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getRequiredProperty("jdbc.driverClassName"));
-        dataSource.setUrl(env.getRequiredProperty("jdbc.url"));
-        dataSource.setUsername(env.getRequiredProperty("jdbc.username"));
-        dataSource.setPassword(env.getRequiredProperty("jdbc.password"));
-        return dataSource;
-    }
-
-    private Properties hibernateProperties() {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
-        properties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
-        return properties;
-    }
-
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory s) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(s);
-        return txManager;
+    public HibernateTransactionManager getTransactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(getSessionFactory().getObject());
+        return transactionManager;
     }
 }
