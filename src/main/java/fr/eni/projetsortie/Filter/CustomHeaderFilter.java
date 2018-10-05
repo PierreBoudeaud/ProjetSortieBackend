@@ -17,6 +17,8 @@ public class CustomHeaderFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        httpServletResponse.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        httpServletResponse.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Origin");
         chain.doFilter(request, response);
     }
 

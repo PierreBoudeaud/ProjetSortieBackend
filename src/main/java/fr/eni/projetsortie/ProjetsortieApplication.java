@@ -2,11 +2,12 @@ package fr.eni.projetsortie;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
+@SpringBootApplication(exclude = { HibernateJpaAutoConfiguration.class, RepositoryRestMvcAutoConfiguration.class})
 @EnableGlobalMethodSecurity()
 @EnableSwagger2
 public class ProjetsortieApplication {
