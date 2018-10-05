@@ -49,7 +49,7 @@ public class Participant {
 
     @ManyToOne(targetEntity = Site.class)
     @JoinColumn(name = "sites_no_site", referencedColumnName = "no_site")
-    private Site sites_no_site;
+    private Site site;
 
     public Participant() {
         this.administrateur = false;
@@ -59,33 +59,33 @@ public class Participant {
         this.password = "";
     }
 
-    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site sites_no_site) {
+    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site site) {
         this();
         this.pseudo = pseudo;
         this.nom = nom;
         this.prenom = prenom;
         this.mail = mail;
-        this.sites_no_site = sites_no_site;
+        this.site = site;
     }
 
-    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site sites_no_site, String password) {
-        this(pseudo, mail, nom, prenom, sites_no_site);
+    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site site, String password) {
+        this(pseudo, mail, nom, prenom, site);
         this.password = password;
     }
 
-    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site sites_no_site, String password, boolean actif) {
-        this(pseudo, mail, nom, prenom, sites_no_site, password);
+    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site site, String password, boolean actif) {
+        this(pseudo, mail, nom, prenom, site, password);
         this.actif = actif;
     }
 
-    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site sites_no_site, String telephone, String password, boolean actif, boolean admin) {
-        this(pseudo, mail, nom, prenom, sites_no_site, password, actif);
+    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site site, String telephone, String password, boolean actif, boolean admin) {
+        this(pseudo, mail, nom, prenom, site, password, actif);
         this.administrateur = admin;
         this.telephone = telephone;
     }
 
-    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site sites_no_site, String telephone, String password, boolean actif, boolean admin, int id) {
-        this(pseudo, mail, nom, prenom, sites_no_site, telephone, password, actif, admin);
+    public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site site, String telephone, String password, boolean actif, boolean admin, int id) {
+        this(pseudo, mail, nom, prenom, site, telephone, password, actif, admin);
         this.id = id;
     }
 
@@ -179,12 +179,29 @@ public class Participant {
         return this;
     }
 
-    public Site getSites_no_site() {
-        return sites_no_site;
+    public Site getSite() {
+        return site;
     }
 
-    public Participant setSites_no_site(Site sites_no_site) {
-        this.sites_no_site = sites_no_site;
+    public Participant setSite(Site site) {
+        this.site = site;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Participant{" +
+                "id=" + id +
+                ", pseudo='" + pseudo + '\'' +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", salt='" + salt + '\'' +
+                ", password='" + password + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", mail='" + mail + '\'' +
+                ", administrateur=" + administrateur +
+                ", actif=" + actif +
+                ", site=" + site +
+                '}';
     }
 }
