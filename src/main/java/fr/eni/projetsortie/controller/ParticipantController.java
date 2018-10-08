@@ -56,18 +56,10 @@ public class ParticipantController {
     }*/
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Participant> createParticipant(@RequestParam("pseudo") String pseudo,
-                                                         @RequestParam("email") String email,
-                                                         @RequestParam("nom") String nom,
-                                                         @RequestParam("prenom") String prenom,
-                                                         @RequestParam("site") int idSite,
-                                                         @RequestParam(name = "telephone", defaultValue = "", required = false) String telephone,
-                                                         @RequestParam("password") String password,
-                                                         @RequestParam(name = "admin", defaultValue = "false") boolean admin,
-                                                         @RequestParam(name = "actif", defaultValue = "false") boolean actif,
+    public ResponseEntity<Participant> createParticipant(@RequestBody Participant newParticipant,
                                                          UriComponentsBuilder uri) {
-        Site site = this.siteDAOImp.get(idSite);
-        Participant newParticipant = new Participant(pseudo, email, nom, prenom, site, telephone, password, admin, actif);
+        //Site site = this.siteDAOImp.get(idSite);
+        //Participant newParticipant = new Participant(pseudo, email, nom, prenom, site, telephone, password, admin, actif);
         this.participantService.cryptPassword(newParticipant);
 
         newParticipant.setId(this.participantService.save(newParticipant));
