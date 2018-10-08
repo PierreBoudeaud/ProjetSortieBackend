@@ -5,6 +5,7 @@ import fr.eni.projetsortie.dao.ParticipantDAOImp;
 import fr.eni.projetsortie.dao.SiteDAOImp;
 import fr.eni.projetsortie.model.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public class ParticipantServiceImp implements Service<Participant>{
 
     @Autowired
     private SiteDAOImp siteDAOImp;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -41,8 +45,10 @@ public class ParticipantServiceImp implements Service<Participant>{
         entity.setSite(this.siteDAOImp.get(entity.getSite().getId()));
         lastParticipant.setSite(entity.getSite());
         if(entity.getPassword().trim().length() > 1){
+            System.out.println(entity.toString());
+            this.cryptPassword(entity);
+            System.out.println(entity.toString());
             lastParticipant.setPassword(entity.getPassword());
-            this.cryptPassword(lastParticipant);
         }
         lastParticipant.setPseudo(entity.getPseudo());
         lastParticipant.setMail(entity.getMail());
@@ -60,8 +66,11 @@ public class ParticipantServiceImp implements Service<Participant>{
         this.participantDAO.delete(id);
     }
 
+    public Participant findByPseudoOrEmail(String pseudo, String email) {
+        return this.participantDAO.searchByPseudoOrEmail(pseudo, email);
+    }
+
     public void cryptPassword(Participant participant) {
-        participant.setPassword(participant.getPassword().toUpperCase());
-        participant.setSalt("sj<koskjsgigknkgi");
+        participant.setPassword(this.passwordEncoder.encode(participant.getPassword()));
     }
 }

@@ -1,6 +1,7 @@
 package fr.eni.projetsortie.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -25,11 +26,7 @@ public class Participant {
     @Column(name = "prenom", nullable = false)
     private String prenom;
 
-    @JsonIgnore
-    @Column(name = "salt")
-    private String salt;
-
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password_hash")
     private String password;
 
@@ -55,7 +52,6 @@ public class Participant {
         this.administrateur = false;
         this.actif = false;
         this.telephone = "";
-        this.salt = "";
         this.password = "";
     }
 
@@ -125,15 +121,6 @@ public class Participant {
         return this;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public Participant setSalt(String salt) {
-        this.salt = salt;
-        return this;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -195,7 +182,6 @@ public class Participant {
                 ", pseudo='" + pseudo + '\'' +
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +
-                ", salt='" + salt + '\'' +
                 ", password='" + password + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", mail='" + mail + '\'' +
