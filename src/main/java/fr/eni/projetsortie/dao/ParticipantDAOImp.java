@@ -2,7 +2,9 @@ package fr.eni.projetsortie.dao;
 
 import fr.eni.projetsortie.ProjetsortieApplication;
 import fr.eni.projetsortie.model.Participant;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,14 +76,20 @@ public class ParticipantDAOImp implements DAO<Participant> {
     }
 
     public Participant searchByPseudoOrEmail(String pseudo, String email) {
-        Participant participant;
-        OpenSession openSession = new OpenSession(this.sessionFactory);
-        CriteriaBuilder builder = openSession.getSession().getCriteriaBuilder();
-        CriteriaQuery<Participant> query = builder.createQuery(Participant.class);
-        Root<Participant> root = query.from(Participant.class);
-        query.select(root).where(builder.equal(root.get("pseudo"), pseudo)).where(builder.or(builder.equal(root.get("email"), email)));
-        Query<Participant> q = openSession.getSession().createQuery(query);
-        participant = q.getSingleResult();
+        Participant participant = null;
+        System.out.println(pseudo);
+        System.out.println(email);
+        try {
+            OpenSession openSession = new OpenSession(this.sessionFactory);
+            List<Participant> participants = openSession.getSession().createCriteria(Participant.class)
+                    .add(Restrictions.or(
+                            Restrictions.eq("pseudo", pseudo),
+                            Restrictions.eq("mail", email)
+                    )).list();
+            participant = participants.get(0);
+        } catch(Exception ex) {
+            this.logger.error(ex.getMessage());
+        }
         return participant;
     }
 }
