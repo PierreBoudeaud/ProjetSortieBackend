@@ -13,11 +13,11 @@ public class Ville {
     private int id;
 
     @Size(max = 100)
-    @Column(name = "nom_ville")
+    @Column(name = "nom_ville", nullable = false)
     private String nom;
 
     @Size(max = 10)
-    @Column(name = "codePostal")
+    @Column(name = "codePostal", nullable = false)
     private String codePostal;
 
     public Ville() {

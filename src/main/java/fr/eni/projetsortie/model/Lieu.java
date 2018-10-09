@@ -12,7 +12,7 @@ public class Lieu {
     private int id;
 
     @Size(max = 100)
-    @Column(name = "nom_lieu", length = 100)
+    @Column(name = "nom_lieu", length = 100, nullable = false)
     private String nom;
 
     @Size(max = 200)
