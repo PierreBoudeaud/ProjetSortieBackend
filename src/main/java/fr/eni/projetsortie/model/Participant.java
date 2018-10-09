@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity()
 @Table(name = "Participants")
@@ -47,6 +49,14 @@ public class Participant {
     @ManyToOne(targetEntity = Site.class)
     @JoinColumn(name = "sites_no_site", referencedColumnName = "no_site")
     private Site site;
+
+
+    @OneToMany(
+            mappedBy = "participant",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Inscription> sorties = new ArrayList<>();
 
     public Participant() {
         this.administrateur = false;
@@ -172,6 +182,15 @@ public class Participant {
 
     public Participant setSite(Site site) {
         this.site = site;
+        return this;
+    }
+
+    public List<Inscription> getSorties() {
+        return sorties;
+    }
+
+    public Participant setSorties(List<Inscription> sorties) {
+        this.sorties = sorties;
         return this;
     }
 
