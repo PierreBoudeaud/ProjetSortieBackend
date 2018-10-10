@@ -1,6 +1,5 @@
 package fr.eni.projetsortie.security;
 
-import fr.eni.projetsortie.model.Participant;
 import fr.eni.projetsortie.model.Token;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

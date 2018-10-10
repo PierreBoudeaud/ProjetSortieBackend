@@ -1,6 +1,5 @@
 package fr.eni.projetsortie.Filter;
 
-import fr.eni.projetsortie.model.Participant;
 import fr.eni.projetsortie.model.Token;
 import fr.eni.projetsortie.security.AuthenticationImp;
 import fr.eni.projetsortie.service.TokenServiceImp;
@@ -54,7 +53,7 @@ public class AuthChecker extends OncePerRequestFilter {
     }
 
     private boolean isValid(String xAuthToken) {
-        boolean valid = false;
+        boolean valid;
         try{
             Token token = this.tokenService.get(xAuthToken);
             valid = token.getExpirationDate().after(new Date());
