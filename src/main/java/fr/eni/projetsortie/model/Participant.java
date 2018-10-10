@@ -50,19 +50,20 @@ public class Participant {
     @JoinColumn(name = "sites_no_site", referencedColumnName = "no_site")
     private Site site;
 
-
+    @JsonIgnore
     @OneToMany(
             mappedBy = "participant",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Inscription> sorties = new ArrayList<>();
+    private List<Inscription> sorties;
 
     public Participant() {
         this.administrateur = false;
         this.actif = false;
         this.telephone = "";
         this.password = "";
+        this.sorties = new ArrayList<>();
     }
 
     public Participant(@Size(max = 30) String pseudo, @Size(max = 20) String mail, @Size(max = 30) String nom, @Size(max = 30) String prenom, Site site) {

@@ -1,5 +1,7 @@
 package fr.eni.projetsortie.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -44,21 +46,20 @@ public class Sortie {
     @JoinColumn(name = "lieux_no_lieu", referencedColumnName = "no_lieu")
     private Lieu lieu;
 
-    @ManyToOne(targetEntity = Etat.class)
-    @JoinColumn(name = "etats_no_etat", referencedColumnName = "no_etat")
+    @Enumerated(EnumType.ORDINAL)
     private Etat etat;
 
-
+    @JsonIgnore
     @OneToMany(
             mappedBy = "sortie",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Inscription> participants = new ArrayList<>();
+    private List<Inscription> participants;
 
     public Sortie(){
         this.etat = Etat.CREATED;
-        this.participants = new ArrayList<Inscription>();
+        this.participants = new ArrayList<>();
     }
 
     public Sortie(@Size(max = 50) String nom, Date dateDebut, int duree,

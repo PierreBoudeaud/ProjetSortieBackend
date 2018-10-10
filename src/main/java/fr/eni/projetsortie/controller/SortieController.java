@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,7 +31,7 @@ public class SortieController {
     @RequestMapping("/{id}")
     @ResponseBody
     public ResponseEntity<Sortie> getSortie(@PathVariable("id") int id){
-        Sortie sortie = null;
+        Sortie sortie;
         ResponseEntity<Sortie> response;
 
         sortie = this.sortieService.get(id);
@@ -43,11 +45,18 @@ public class SortieController {
         return response;
     }
 
-    @RequestMapping()
-    public ResponseEntity<Sortie> createSortie (@RequestBody Sortie sortie){
-        this.sortieService.save(sortie);
-        this.logger.debug("Create sortie " + sortie.getId());
-        return ResponseEntity.ok(sortie);
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Sortie> createSortie (@RequestBody Sortie newSortie,
+                                                UriComponentsBuilder uri){
+
+        newSortie.setId((int) this.sortieService.save(newSortie));
+        URI location =
+                uri.path("/sorties/")
+                        .path(String.valueOf(newSortie.getId()))
+                        .build()
+                        .toUri();
+        this.logger.debug("Create sortie " + location);
+        return ResponseEntity.created(location).body(newSortie);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
