@@ -30,7 +30,7 @@ public class AuthChecker extends OncePerRequestFilter {
         System.out.println(RequestMethod.POST);
         System.out.println(request.getServletPath());
         System.out.println(request.getMethod());
-        if(!(request.getServletPath().equals("/session") && request.getMethod().equals(RequestMethod.POST.toString()))) {
+        if(!request.getMethod().equals("OPTIONS") && !(request.getServletPath().equals("/session") && request.getMethod().equals(RequestMethod.POST.toString()))) {
 
 
             String xAuth = request.getHeader("X-Authorization");
@@ -49,6 +49,7 @@ public class AuthChecker extends OncePerRequestFilter {
     }
 
     private void error401(HttpServletResponse response) throws IOException{
+        CustomHeaderFilter.addHeaders(response);
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "The token is invalid");
     }
 
