@@ -16,7 +16,7 @@ public class VilleServiceImp implements Service<Ville>{
 
     @Transactional
     @Override
-    public int save(Ville entity) {
+    public Object save(Ville entity) {
         return this.villeDAO.save(entity);
     }
 

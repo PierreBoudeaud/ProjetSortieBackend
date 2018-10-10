@@ -15,7 +15,7 @@ public class TokenServiceImp implements Service<Token>{
 
     @Override
     @Transactional
-    public int save(Token entity) {
+    public Object save(Token entity) {
         return this.tokenDAO.save(entity);
     }
 
@@ -39,4 +39,6 @@ public class TokenServiceImp implements Service<Token>{
     public void delete(Object id) {
         this.tokenDAO.delete(id);
     }
+
+    public void deleteLastToken() { this.tokenDAO.deleteLastToken(); }
 }

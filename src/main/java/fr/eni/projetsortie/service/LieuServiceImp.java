@@ -19,7 +19,7 @@ public class LieuServiceImp implements Service<Lieu>{
 
     @Transactional
     @Override
-    public int save(Lieu entity) {
+    public Object save(Lieu entity) {
         return this.lieuDAO.save(entity);
     }
 

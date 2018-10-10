@@ -16,7 +16,7 @@ public class SiteServiceImp implements Service<Site>{
 
     @Transactional
     @Override
-    public int save(Site entity) {
+    public Object save(Site entity) {
         return this.siteDAO.save(entity);
     }
 

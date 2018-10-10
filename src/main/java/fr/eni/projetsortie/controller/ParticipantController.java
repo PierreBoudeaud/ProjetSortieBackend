@@ -3,7 +3,6 @@ package fr.eni.projetsortie.controller;
 import fr.eni.projetsortie.ProjetsortieApplication;
 import fr.eni.projetsortie.model.Participant;
 import fr.eni.projetsortie.service.ParticipantServiceImp;
-import fr.eni.projetsortie.service.SiteServiceImp;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,19 +44,12 @@ public class ParticipantController {
         return response;
     }
 
-    /*@RequestMapping(params = "pseudo")
-    public Participant getParticipantByPseudoOrEmail(@RequestParam("pseudo") String pseudo) {
-        return this.participantService.(pseudo);
-    }*/
-
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Participant> createParticipant(@RequestBody Participant newParticipant,
                                                          UriComponentsBuilder uri) {
-        //Site site = this.siteDAOImp.get(idSite);
-        //Participant newParticipant = new Participant(pseudo, email, nom, prenom, site, telephone, password, admin, actif);
         this.participantService.cryptPassword(newParticipant);
 
-        newParticipant.setId(this.participantService.save(newParticipant));
+        newParticipant.setId( (int) this.participantService.save(newParticipant));
         URI location =
                 uri.path("/participants/")
                         .path(String.valueOf(newParticipant.getId()))

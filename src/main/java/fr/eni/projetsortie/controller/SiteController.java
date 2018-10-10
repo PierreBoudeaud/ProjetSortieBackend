@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/sites")
 @Api(value = "Sites")
 public class SiteController {
-    private final static Logger log = LoggerFactory.getLogger(ProjetsortieApplication.class);
+    private final static Logger logger = LoggerFactory.getLogger(ProjetsortieApplication.class);
 
     @Autowired
     private SiteServiceImp siteService;
@@ -35,7 +35,7 @@ public class SiteController {
         site = this.siteService.get(id);
         if(site != null){
             response = ResponseEntity.ok(site);
-            log.debug("Site found" + site.toString());
+            logger.debug("Site found" + site.toString());
         }
         else {
             response = ResponseEntity.notFound().build();
@@ -44,13 +44,14 @@ public class SiteController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Site> createSite(@RequestBody() Site newSite, UriComponentsBuilder uri) {
-        newSite.setId(this.siteService.save(newSite));
+    public ResponseEntity<Site> createSite(@RequestBody Site newSite, UriComponentsBuilder uri) {
+        newSite.setId( (int) this.siteService.save(newSite));
         URI location =
                 uri.path("/sites/")
                         .path(String.valueOf(newSite.getId()))
                         .build()
                         .toUri();
+        this.logger.debug("Create site " + location);
         return ResponseEntity.created(location).body(newSite);
     }
 

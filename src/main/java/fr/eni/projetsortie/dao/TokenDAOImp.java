@@ -14,7 +14,7 @@ public class TokenDAOImp implements DAO<Token> {
     private SessionFactory sessionFactory;
 
     @Override
-    public int save(Token entity) {
+    public Object save(Token entity) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().save(entity);
         openSession.closeSession();

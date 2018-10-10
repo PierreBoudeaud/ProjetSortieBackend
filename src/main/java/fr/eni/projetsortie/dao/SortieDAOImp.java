@@ -1,10 +1,8 @@
 package fr.eni.projetsortie.dao;
 
 import fr.eni.projetsortie.ProjetsortieApplication;
-import fr.eni.projetsortie.model.Participant;
-import org.hibernate.Criteria;
+import fr.eni.projetsortie.model.Sortie;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ParticipantDAOImp implements DAO<Participant> {
+public class SortieDAOImp implements DAO<Sortie> {
     private static final Logger logger = LoggerFactory.getLogger(ProjetsortieApplication.class);
 
     @Autowired
@@ -28,7 +25,7 @@ public class ParticipantDAOImp implements DAO<Participant> {
 
     @Transactional
     @Override
-    public Object save(Participant entity) {
+    public Object save(Sortie entity) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().save(entity);
         openSession.closeSession();
@@ -36,32 +33,32 @@ public class ParticipantDAOImp implements DAO<Participant> {
     }
 
     @Override
-    public Participant get(Object id) {
+    public Sortie get(Object id) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
-        Participant participant;
-        int idParticipant = (int) id;
-        participant = openSession.getSession().get(Participant.class, idParticipant);
+        Sortie sortie;
+        int idSortie = (int) id;
+        sortie = openSession.getSession().get(Sortie.class, idSortie);
         openSession.closeSession();
-        return participant;
+        return sortie;
     }
 
     @Override
-    public List<Participant> list() {
+    public List<Sortie> list() {
         OpenSession openSession = new OpenSession(this.sessionFactory);
-        List<Participant> participants;
+        List<Sortie> sorties;
         try{
-            participants = openSession.getSession().createQuery("select p from Participant p").list();
+            sorties = openSession.getSession().createQuery("select s from Sortie s").list();
         } catch(Exception ex){
             this.logger.error(ex.toString());
-            participants = new ArrayList<>();
+            sorties = new ArrayList<>();
         }
         openSession.closeSession();
-        return participants;
+        return sorties;
     }
 
     @Transactional
     @Override
-    public void update(Participant entity) {
+    public void update(Sortie entity) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().update(entity);
         openSession.closeSession();
@@ -70,26 +67,20 @@ public class ParticipantDAOImp implements DAO<Participant> {
     @Override
     public void delete(Object id) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
-        Participant participant = this.get(id);
-        openSession.getSession().delete(participant);
+        Sortie sortie = this.get(id);
+        openSession.getSession().delete(sortie);
         openSession.closeSession();
     }
-
-    public Participant searchByPseudoOrEmail(String pseudo, String email) {
-        Participant participant = null;
-        System.out.println(pseudo);
-        System.out.println(email);
-        try {
-            OpenSession openSession = new OpenSession(this.sessionFactory);
-            List<Participant> participants = openSession.getSession().createCriteria(Participant.class)
-                    .add(Restrictions.or(
-                            Restrictions.eq("pseudo", pseudo),
-                            Restrictions.eq("mail", email)
-                    )).list();
-            participant = participants.get(0);
-        } catch(Exception ex) {
-            this.logger.error(ex.getMessage());
-        }
-        return participant;
-    }
+    /*
+    public Sortie searchByParticipant(String pseudo, String email) {
+        Sortie sortie;
+        OpenSession openSession = new OpenSession(this.sessionFactory);
+        CriteriaBuilder builder = openSession.getSession().getCriteriaBuilder();
+        CriteriaQuery<Sortie> query = builder.createQuery(Sortie.class);
+        Root<Sortie> root = query.from(Sortie.class);
+        query.select(root).where(builder.equal(root.get("pseudo"), pseudo)).where(builder.or(builder.equal(root.get("email"), email)));
+        Query<Sortie> q = openSession.getSession().createQuery(query);
+        sortie = q.getSingleResult();
+        return sortie;
+    }*/
 }
