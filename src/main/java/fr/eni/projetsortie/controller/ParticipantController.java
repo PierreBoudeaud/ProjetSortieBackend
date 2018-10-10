@@ -2,14 +2,12 @@ package fr.eni.projetsortie.controller;
 
 import fr.eni.projetsortie.ProjetsortieApplication;
 import fr.eni.projetsortie.model.Participant;
-import fr.eni.projetsortie.model.Site;
 import fr.eni.projetsortie.service.ParticipantServiceImp;
 import fr.eni.projetsortie.service.SiteServiceImp;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,9 +21,6 @@ import java.util.List;
 public class ParticipantController {
     @Autowired
     private ParticipantServiceImp participantService;
-
-    @Autowired
-    private SiteServiceImp siteDAOImp;
 
     private static final Logger logger = LoggerFactory.getLogger(ProjetsortieApplication.class);
 

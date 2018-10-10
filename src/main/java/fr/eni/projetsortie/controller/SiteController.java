@@ -44,8 +44,7 @@ public class SiteController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Site> createSite(@RequestParam(value = "nom") String nom, UriComponentsBuilder uri) {
-        Site newSite = new Site(nom);
+    public ResponseEntity<Site> createSite(@RequestBody() Site newSite, UriComponentsBuilder uri) {
         newSite.setId(this.siteService.save(newSite));
         URI location =
                 uri.path("/sites/")

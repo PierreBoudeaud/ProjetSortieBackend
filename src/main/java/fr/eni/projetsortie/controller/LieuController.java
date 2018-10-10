@@ -2,9 +2,7 @@ package fr.eni.projetsortie.controller;
 
 import fr.eni.projetsortie.ProjetsortieApplication;
 import fr.eni.projetsortie.model.Lieu;
-import fr.eni.projetsortie.model.Site;
 import fr.eni.projetsortie.service.LieuServiceImp;
-import fr.eni.projetsortie.service.SiteServiceImp;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

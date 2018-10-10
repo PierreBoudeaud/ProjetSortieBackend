@@ -2,7 +2,6 @@ package fr.eni.projetsortie.controller;
 
 import fr.eni.projetsortie.ProjetsortieApplication;
 import fr.eni.projetsortie.model.Ville;
-import fr.eni.projetsortie.model.Site;
 import fr.eni.projetsortie.service.VilleServiceImp;
 import fr.eni.projetsortie.service.SiteServiceImp;
 import io.swagger.annotations.Api;
@@ -22,9 +21,6 @@ import java.util.List;
 public class VilleController {
     @Autowired
     private VilleServiceImp villeService;
-
-    @Autowired
-    private SiteServiceImp siteDAOImp;
 
     private static final Logger logger = LoggerFactory.getLogger(ProjetsortieApplication.class);
 
