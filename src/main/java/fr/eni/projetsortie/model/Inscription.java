@@ -25,6 +25,7 @@ public class Inscription {
     private Inscription(){}
 
     public Inscription(Sortie sortie, Participant participant) {
+        this();
         this.participant = participant;
         this.sortie = sortie;
         this.id = new InscriptionId(sortie.getId(), participant.getId());
