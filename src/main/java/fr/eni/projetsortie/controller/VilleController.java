@@ -47,7 +47,7 @@ public class VilleController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Ville> createVille(@RequestBody Ville newVille, UriComponentsBuilder uri) {
-        newVille.setId(this.villeService.save(newVille));
+        newVille.setId((int) this.villeService.save(newVille));
         URI location =
                 uri.path("/villes/")
                         .path(String.valueOf(newVille.getId()))

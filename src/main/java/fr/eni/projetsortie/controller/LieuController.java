@@ -52,7 +52,7 @@ public class LieuController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Lieu> createLieu(@RequestBody Lieu newLieu,
                                                          UriComponentsBuilder uri) {
-        newLieu.setId(this.lieuService.save(newLieu));
+        newLieu.setId( (int) this.lieuService.save(newLieu));
         URI location =
                 uri.path("/lieux/")
                         .path(String.valueOf(newLieu.getId()))

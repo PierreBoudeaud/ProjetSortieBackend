@@ -23,7 +23,7 @@ public class SortieServiceImp implements Service<Sortie>{
 
     @Transactional
     @Override
-    public int save(Sortie entity) {
+    public Object save(Sortie entity) {
         return this.sortieDAO.save(entity);
     }
 

@@ -19,7 +19,7 @@ public class SiteDAOImp implements DAO<Site> {
 
     @Transactional
     @Override
-    public int save(Site entity) {
+    public Object save(Site entity) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().save(entity);
         openSession.closeSession();

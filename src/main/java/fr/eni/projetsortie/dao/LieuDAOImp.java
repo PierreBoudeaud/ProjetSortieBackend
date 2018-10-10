@@ -22,7 +22,7 @@ public class LieuDAOImp implements DAO<Lieu> {
 
     @Transactional
     @Override
-    public int save(Lieu entity) {
+    public Object save(Lieu entity) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().save(entity);
         openSession.closeSession();

@@ -19,7 +19,7 @@ public class VilleDAOImp implements DAO<Ville> {
 
     @Transactional
     @Override
-    public int save(Ville entity) {
+    public Object save(Ville entity) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().save(entity);
         openSession.closeSession();

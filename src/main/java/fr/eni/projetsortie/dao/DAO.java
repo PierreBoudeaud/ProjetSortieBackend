@@ -6,7 +6,7 @@ import java.util.List;
 
 @Repository
 public interface DAO<T> {
-    int save(T entity);
+    Object save(T entity);
     T get(Object id);
     List<T> list();
     void update(T entity);

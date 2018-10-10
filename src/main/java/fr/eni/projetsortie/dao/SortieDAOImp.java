@@ -25,7 +25,7 @@ public class SortieDAOImp implements DAO<Sortie> {
 
     @Transactional
     @Override
-    public int save(Sortie entity) {
+    public Object save(Sortie entity) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().save(entity);
         openSession.closeSession();
@@ -71,7 +71,7 @@ public class SortieDAOImp implements DAO<Sortie> {
         openSession.getSession().delete(sortie);
         openSession.closeSession();
     }
-
+    /*
     public Sortie searchByParticipant(String pseudo, String email) {
         Sortie sortie;
         OpenSession openSession = new OpenSession(this.sessionFactory);
@@ -82,5 +82,5 @@ public class SortieDAOImp implements DAO<Sortie> {
         Query<Sortie> q = openSession.getSession().createQuery(query);
         sortie = q.getSingleResult();
         return sortie;
-    }
+    }*/
 }

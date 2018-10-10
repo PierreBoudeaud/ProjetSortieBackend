@@ -28,7 +28,7 @@ public class ParticipantDAOImp implements DAO<Participant> {
 
     @Transactional
     @Override
-    public int save(Participant entity) {
+    public Object save(Participant entity) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().save(entity);
         openSession.closeSession();
