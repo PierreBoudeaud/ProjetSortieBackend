@@ -29,7 +29,9 @@ public class AuthChecker extends OncePerRequestFilter {
         System.out.println(RequestMethod.POST);
         System.out.println(request.getServletPath());
         System.out.println(request.getMethod());
-        if(!request.getMethod().equals("OPTIONS") && !(request.getServletPath().equals("/session") && request.getMethod().equals(RequestMethod.POST.toString()))) {
+        if(!request.getMethod().equals("OPTIONS") && !(request.getServletPath().equals("/session") && request.getMethod().equals(RequestMethod.POST.toString()))
+                && !(request.getServletPath().equals("/participants") && request.getMethod().equals(RequestMethod.POST.toString()))
+                && !(request.getServletPath().equals("/sites") && request.getMethod().equals(RequestMethod.GET.toString()))) {
 
 
             String xAuth = request.getHeader("X-Authorization");
