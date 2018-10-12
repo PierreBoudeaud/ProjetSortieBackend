@@ -6,11 +6,8 @@ import java.util.Objects;
 
 @Embeddable
 public class InscriptionId implements Serializable {
-
-    @Column(name = "sorties_no_sortie")
     private int sortieId;
 
-    @Column(name = "participants_no_participant")
     private int participantId;
 
     private InscriptionId() {}

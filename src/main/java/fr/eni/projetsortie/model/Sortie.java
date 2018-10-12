@@ -51,6 +51,7 @@ public class Sortie {
 
     @JsonIgnore
     @OneToMany(
+            targetEntity = Inscription.class,
             mappedBy = "sortie",
             cascade = CascadeType.ALL,
             orphanRemoval = true
