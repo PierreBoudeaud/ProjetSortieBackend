@@ -37,9 +37,6 @@ public class SessionController {
 
     @RequestMapping()
     public ResponseEntity<Token> getToken(HttpServletRequest request) {
-        /*AuthenticationImp authentication = (AuthenticationImp) SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
-        Token token = (Token) authentication.getCredentials();*/
         Token token = (Token) request.getAttribute("token");
         return ResponseEntity.ok(token);
     }
@@ -53,9 +50,6 @@ public class SessionController {
         Participant participant;
         ResponseEntity<Token> response;
         participant = this.participantService.findByPseudoOrEmail(pseudo, email);
-        System.out.println(password);
-        System.out.println(participant.getPassword());
-        System.out.println(this.passwordEncoder.matches(password, participant.getPassword()));
         if(participant != null && this.passwordEncoder.matches(password, participant.getPassword())){
             this.logger.debug(participant.toString());
             Token token = new Token(participant, remember);
