@@ -23,12 +23,15 @@ public class InscriptionDAOImp implements DAO<Inscription> {
     @Transactional
     @Override
     public Object save(Inscription entity){
+        InscriptionId inscriptionId = new InscriptionId(entity.getSortie().getId(), entity.getParticipant().getId());
+        entity.setId(inscriptionId);
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().save(entity);
         openSession.closeSession();
         return entity.getId();
     }
 
+    @Override
     public Inscription get(Object id) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         Inscription inscription;
@@ -38,11 +41,12 @@ public class InscriptionDAOImp implements DAO<Inscription> {
         return inscription;
     }
 
+    @Override
     public List<Inscription> list() {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         List<Inscription> inscriptions;
         try{
-            inscriptions = openSession.getSession().createQuery("select i from INSCRIPTIONS i").list();
+            inscriptions = openSession.getSession().createQuery("select i from Inscription i INNER JOIN Sortie INNER JOIN Participant").list();
         } catch (Exception ex){
             this.logger.error(ex.toString());
             inscriptions = new ArrayList<>();

@@ -18,9 +18,11 @@ public class InscriptionServiceImp implements Service<Inscription>{
     @Override
     public Object save(Inscription entity){return this.inscriptionDAO.save(entity);}
 
+    @Transactional
     @Override
     public Inscription get(Object id) { return this.inscriptionDAO.get(id); }
 
+    @Transactional
     @Override
     public List<Inscription> list() {
         return this.inscriptionDAO.list();
