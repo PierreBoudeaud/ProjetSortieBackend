@@ -2,6 +2,7 @@ package fr.eni.projetsortie.dao;
 
 import fr.eni.projetsortie.model.Token;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +48,13 @@ public class TokenDAOImp implements DAO<Token> {
     public void delete(Object token) {
         OpenSession openSession = new OpenSession(this.sessionFactory);
         openSession.getSession().delete(token);
+        openSession.closeSession();
+    }
+
+    public void deleteLastToken() {
+        OpenSession openSession = new OpenSession(this.sessionFactory);
+        Query<Token> query = openSession.getSession().createQuery("DELETE TOKEN WHERE expirationDate < GETDATE()");
+        query.executeUpdate();
         openSession.closeSession();
     }
 }
