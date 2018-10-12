@@ -83,4 +83,20 @@ public class SortieDAOImp implements DAO<Sortie> {
         sortie = q.getSingleResult();
         return sortie;
     }*/
+
+    public List<Integer> participantsOfSortie(int idSortie) {
+        List<Integer> participants;
+        OpenSession openSession = new OpenSession(this.sessionFactory);
+        try{
+            participants = openSession.getSession().createQuery("SELECT p.id " +
+                    "FROM Inscription i " +
+                    "JOIN Participant p " +
+                    "WHERE i.sortie = " + idSortie ).list();
+        } catch(Exception ex) {
+            System.out.println(ex.toString());
+            this.logger.error(ex.toString());
+            participants = new ArrayList<>();
+        }
+       return participants;
+    }
 }

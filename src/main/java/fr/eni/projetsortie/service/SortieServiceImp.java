@@ -54,4 +54,6 @@ public class SortieServiceImp implements Service<Sortie>{
     public void delete(Object id) {
         this.sortieDAO.delete(id);
     }
+
+    public List<Integer> participantsOfSortie(int idSortie) { return this.sortieDAO.participantsOfSortie(idSortie); }
 }
