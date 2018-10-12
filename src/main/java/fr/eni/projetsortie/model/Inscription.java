@@ -5,17 +5,19 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity()
-@Table(name = "INSCRIPTIONS")
+@Table(name = "Inscriptions")
 public class Inscription {
 
     @EmbeddedId
     private InscriptionId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Sortie.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sortie_no_sortie", referencedColumnName = "no_sortie")
     @MapsId("sortieId")
     private Sortie sortie;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Participant.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "participant_no_participant", referencedColumnName = "no_participant")
     @MapsId("participantId")
     private Participant participant;
 

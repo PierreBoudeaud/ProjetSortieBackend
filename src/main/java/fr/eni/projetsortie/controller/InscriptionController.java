@@ -47,6 +47,12 @@ public class InscriptionController {
         return response;
     }
 
+    /*@RequestMapping()
+    public ResponseEntity<List<Inscription>> getInscriptionOfSortie(@RequestParam("sortieId") int sortieId){
+        List<Inscription> inscriptions = this.inscriptionService.list();
+        return ResponseEntity.ok(inscriptions);
+    }*/
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Inscription> createInscription (@RequestBody Inscription newInscription,
                                                      UriComponentsBuilder uri){
