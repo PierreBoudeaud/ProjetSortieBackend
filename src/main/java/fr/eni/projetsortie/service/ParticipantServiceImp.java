@@ -25,6 +25,8 @@ public class ParticipantServiceImp implements Service<Participant>{
     @Transactional
     @Override
     public Object save(Participant entity) {
+        entity.setAdministrateur(false);
+        entity.setActif(true);
         return this.participantDAO.save(entity);
     }
 
