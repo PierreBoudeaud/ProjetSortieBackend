@@ -45,6 +45,9 @@ public class SortieController {
         return response;
     }
 
+    @RequestMapping(params = "sortie")
+    public List<Integer> participantsOfSortie(@RequestParam("sortie") int idSortie) { return this.sortieService.participantsOfSortie(idSortie); }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Sortie> createSortie (@RequestBody Sortie newSortie,
                                                 UriComponentsBuilder uri){
